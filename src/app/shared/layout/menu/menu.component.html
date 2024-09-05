@@ -1,0 +1,7 @@
+<ul>
+  @for (menuItem of menuItems(); track $index) {
+    <li>
+      <a [routerLink]="menuItem.path" [routerLinkActive]="'active'">{{ menuItem.label }}</a>
+    </li>
+  }
+</ul>

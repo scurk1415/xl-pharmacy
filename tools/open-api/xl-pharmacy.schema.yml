@@ -1,0 +1,129 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  version: 1.0.0
+paths:
+  /orders:
+    get:
+      tags:
+        - orders
+      summary: Get order list
+      operationId: getOrderList
+      requestBody:
+        description: Filter Orders
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderResponse'
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get product list
+      operationId: getProductList
+      requestBody:
+        description: Filter Products
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get user list
+      operationId: getUserList
+      requestBody:
+        description: Filter User
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+components:
+  schemas:
+    OrderRequest:
+      type: object
+      properties:
+        startDate:
+          type: number
+        endDate:
+          type: number
+    OrderResponse:
+      type: object
+      properties:
+        orderId:
+          type: number
+        orderName:
+          type: string
+        customer:
+          $ref: '#/components/schemas/Customer'
+        orderDate:
+          type: number
+        totalAmount:
+          type: number
+    Customer:
+      type: object
+      properties:
+        customerId:
+          type: number
+        name:
+          type: string
+    ProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        available:
+          type: boolean
+    ProductResponse:
+      type: object
+      properties:
+        productId:
+          type: number
+        productName:
+          type: string
+        available:
+          type: boolean
+    UserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+    UserResponse:
+      type: object
+      properties:
+        userId:
+          type: number
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string

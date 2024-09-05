@@ -1,0 +1,16 @@
+<table>
+  <thead>
+    <tr>
+      @for (column of columns(); track $index) {
+        <th>{{ column.label }}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of data(); track $index) {
+      <ng-container [ngTemplateOutlet]="rowTemplate().template"
+                    [ngTemplateOutletContext]="{$implicit: row}">
+      </ng-container>
+    }
+  </tbody>
+</table>
