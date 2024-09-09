@@ -1,0 +1,16 @@
+<xl-table [columns]="columns()"
+          [data]="data()"
+          [simple]="true">
+  <ng-template let-item [xlTableRow]="data()">
+    <tr>
+      <td>
+        {{ item.label }}
+        <xl-stock-badge [stock]="item.stockNumber"></xl-stock-badge>
+      </td>
+      <td style="text-align: right;">{{ item.price }}</td>
+      <td style="text-align: center;">
+        <button (click)="addReplacement(item)">+</button>
+      </td>
+    </tr>
+  </ng-template>
+</xl-table>

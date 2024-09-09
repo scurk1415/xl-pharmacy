@@ -13,12 +13,12 @@ export class ProductsService {
   getProducts() {
     return toListSignal(this.productsApiService.getProductList()
       .pipe(
-        catchError(() => of(orders))
+        catchError(() => of(products))
       ));
   }
 
 }
 
-const orders: ApiProductResponse[] = [
+const products: ApiProductResponse[] = [
   { productId: 1, productName: 'First Order', available: true }
 ];

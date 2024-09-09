@@ -1,0 +1,17 @@
+:host {
+  display: inline-block;
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #888888;
+  text-align: center;
+  border-radius: 0.25rem;
+  background: #f3f3f3;
+  margin-left: 5px;
+
+  &.in-stock {
+    background: #77bf94;
+    color: #fff;
+
+  }
+}

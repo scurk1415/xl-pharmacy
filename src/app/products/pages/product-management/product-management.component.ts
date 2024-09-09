@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FilterPageDirective } from '@xl/shared/components/filterPage/filter-page.directive';
 import { ApiProductResponse } from '@xl/api';
-import { TableModule } from '@xl/shared/components/table/table.module';
 import { ProductsService } from '../../services/products.service';
+import { TableModule } from '@xl/shared/features/table/table.module';
+import { TableBase } from '@xl/shared/components/filter-page/table-base.directive';
 
 @Component({
   selector: 'xl-product-management',
@@ -14,18 +14,18 @@ import { ProductsService } from '../../services/products.service';
   styleUrl: './product-management.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class ProductManagementComponent extends FilterPageDirective<ApiProductResponse> {
+export default class ProductManagementComponent extends TableBase<ApiProductResponse> {
 
   private productsService = inject(ProductsService);
 
-  data = this.productsService.getProducts();
+  override data = this.productsService.getProducts();
 
-  getColumns() {
+  override getColumns() {
     return [
       { label: 'Id' },
       { label: 'Product' },
-      { label: 'Available' },
-      { label: '' },
+      { label: 'Available' }
     ];
   }
+
 }

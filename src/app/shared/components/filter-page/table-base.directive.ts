@@ -1,8 +1,8 @@
 import { Directive, signal, Signal } from '@angular/core';
-import { TableColumn } from '@xl/shared/components/table/table.component';
+import { TableColumn } from '@xl/shared/features/table/table.component';
 
 @Directive()
-export abstract class FilterPageDirective<T> {
+export abstract class TableBase<T> {
 
   protected columns = signal(this.getColumns());
 

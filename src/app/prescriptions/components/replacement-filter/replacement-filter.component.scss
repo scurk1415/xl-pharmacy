@@ -1,0 +1,22 @@
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+
+  .option-group {
+    display: flex;
+    gap: 5px;
+    width: 100px;
+    font-size: 13px;
+  }
+
+  .option-description {
+    flex: 1;
+    font-size: 12px;
+  }
+}
+
+.option-children {
+  padding-left: 20px;
+}

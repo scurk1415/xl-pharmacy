@@ -1,0 +1,81 @@
+<xl-modal-container [title]="'Zamenjava Izdelka'">
+
+    <div class="wrapper">
+      <!-- Left Column (Form for selecting product and instructions) -->
+      <div class="info-wrapper">
+
+        <xl-label-field [label]="'Predpisan izdelek'">
+          Atoris 10 mg film.obl.tbl. 30x
+        </xl-label-field>
+
+        <xl-label-field [label]="'Farmacavtska oblika'" [horizontal]="true">
+          Tableta
+        </xl-label-field>
+
+        <xl-label-field [label]="'Predpisano st. enot'" [horizontal]="true">
+          3
+        </xl-label-field>
+
+        <xl-label-field [label]="'Odmerek in frekvenca'" [horizontal]="true">
+          3 tablete 3x na dan
+        </xl-label-field>
+
+        <xl-label-field [label]="'Izracunano st. enot'" [horizontal]="true">
+          <input type="text">
+        </xl-label-field>
+
+        <xl-label-field [label]="'Navodilo pacientu'" [horizontal]="true">
+          1x3 pred jedjo
+          <textarea [placeholder]="'1x3 pred jedjo'"></textarea>
+        </xl-label-field>
+
+        <xl-label-field [label]="'Navodilo farmacevtu'" [horizontal]="true">
+          Ne zamenjuj
+        </xl-label-field>
+
+        <xl-label-field [label]="'Skupine in oznake'">
+          <xl-replacement-filter [options]="(itemOptions | async)!"></xl-replacement-filter>
+        </xl-label-field>
+
+      </div>
+
+      <!-- Middle Column (Product Suggestions) -->
+      <div class="info-wrapper">
+        <h5>Predlagani izdelki</h5>
+        <div class="form-group">
+          <input type="text" placeholder="Search for a product">
+        </div>
+        <div class="form-group">
+          <input type="checkbox" id="inStockCheck">
+          <label for="inStockCheck">In Stock Only</label>
+        </div>
+        <xl-suggested-replacements></xl-suggested-replacements>
+
+      </div>
+
+      <!-- Right Column (Selected Products) -->
+      <div class="info-wrapper">
+        <h5>Selected Products</h5>
+        <ul class="selected-products">
+          <li>
+            Atoris 10 mg film.obl.tbl. 30x
+            <input type="number" value="3" style="width: 50px;">
+            <button class="btn btn-danger btn-sm">x</button>
+          </li>
+          <li>
+            Sortis 10 mg film.obl.tbl. 30x
+            <input type="number" value="2" style="width: 50px;">
+            <button class="btn btn-danger btn-sm">x</button>
+          </li>
+        </ul>
+        <div class="total-cost">
+          <h6>Total Cost: <strong>4.26</strong></h6>
+          <div>
+            <button class="btn btn-outline-secondary">Cancel</button>
+            <button class="btn btn-primary">To Checkout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</xl-modal-container>

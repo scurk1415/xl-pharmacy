@@ -1,0 +1,17 @@
+@for (option of options(); track option.value) {
+  <div class="filter-option">
+    <div class="option-group">
+      <input type="checkbox" [id]="option.value">
+      <label [for]="option.value">{{ option.name }}</label>
+    </div>
+
+    <div class="option-description">{{ option.description }}</div>
+  </div>
+
+  @if (option.children) {
+    <div class="option-children">
+      <xl-replacement-filter [options]="option.children"></xl-replacement-filter>
+    </div>
+  }
+
+}

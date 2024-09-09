@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, input, contentChild } from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
-import { TableRowDirective } from '@xl/shared/components/table/table-row.directive';
+import { NgTemplateOutlet, NgClass, NgStyle } from '@angular/common';
+import { TableRowDirective } from '@xl/shared/features/table/table-row.directive';
 
 @Component({
   selector: 'xl-table',
   standalone: true,
   imports: [
-    NgTemplateOutlet
+    NgTemplateOutlet,
+    NgClass,
+    NgStyle
   ],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
@@ -16,6 +18,7 @@ export class TableComponent<T> {
 
   columns = input.required<TableColumn[]>();
   data = input.required<T[]>();
+  simple = input<boolean>(false);
 
   rowTemplate = contentChild.required(TableRowDirective);
 
@@ -23,4 +26,5 @@ export class TableComponent<T> {
 
 export interface TableColumn {
   label: string;
+  style?: Record<string, any>;
 }

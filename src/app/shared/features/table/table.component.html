@@ -1,8 +1,8 @@
-<table>
+<table [ngClass]="{ 'simple-table': simple() }">
   <thead>
     <tr>
       @for (column of columns(); track $index) {
-        <th>{{ column.label }}</th>
+        <th [ngStyle]="column.style">{{ column.label }}</th>
       }
     </tr>
   </thead>

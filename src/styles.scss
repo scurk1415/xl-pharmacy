@@ -1,4 +1,7 @@
 @forward "../public/css/reset";
+@forward "../public/css/forms";
+
+@forward '@angular/cdk/overlay-prebuilt.css';
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

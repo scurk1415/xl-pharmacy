@@ -1,0 +1,14 @@
+<xl-table [columns]="columns()" [data]="data()">
+  <ng-template let-item [xlTableRow]="data()">
+    <tr>
+      <td>{{ item.prescriptionId }}</td>
+      <td>{{ item.prescriptionName }}</td>
+      <td>{{ item.prescriptionDate }}</td>
+      <td>{{ item.totalAmount | number:'1.2-2' }}$</td>
+      <td>{{ item.customer.name }}</td>
+      <td>
+        <i (click)="openEditModal(item)">Item</i>
+      </td>
+    </tr>
+  </ng-template>
+</xl-table>

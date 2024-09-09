@@ -3,18 +3,18 @@ info:
   title: Swagger Petstore - OpenAPI 3.0
   version: 1.0.0
 paths:
-  /orders:
+  /prescriptions:
     get:
       tags:
-        - orders
-      summary: Get order list
-      operationId: getOrderList
+        - prescriptions
+      summary: Get prescription list
+      operationId: getPrescriptionList
       requestBody:
-        description: Filter Orders
+        description: Filter Prescriptions
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderRequest'
+              $ref: '#/components/schemas/PrescriptionRequest'
       responses:
         default:
           description: successful operation
@@ -23,7 +23,30 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OrderResponse'
+                  $ref: '#/components/schemas/PrescriptionResponse'
+  /prescriptions/{prescriptionId}:
+    get:
+      tags:
+        - prescriptions
+      summary: Get available filters for prescription
+      operationId: getFilters
+      parameters:
+        - name: prescriptionId
+          in: path
+          required: true
+          description: Prescription ID
+          schema:
+            type: integer
+            format: int64
+      responses:
+        default:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrescriptionReplacementResponse'
   /products:
     get:
       tags:
@@ -68,26 +91,45 @@ paths:
                   $ref: '#/components/schemas/UserResponse'
 components:
   schemas:
-    OrderRequest:
+    PrescriptionRequest:
       type: object
       properties:
         startDate:
           type: number
         endDate:
           type: number
-    OrderResponse:
+    PrescriptionResponse:
       type: object
       properties:
-        orderId:
+        prescriptionId:
           type: number
-        orderName:
+        prescriptionName:
           type: string
         customer:
           $ref: '#/components/schemas/Customer'
-        orderDate:
+        prescriptionDate:
           type: number
         totalAmount:
           type: number
+      required:
+        - prescriptionId
+        - prescriptionName
+        - customer
+        - prescriptionDate
+        - totalAmount
+    PrescriptionReplacementResponse:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        value:
+          type: string
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrescriptionReplacementResponse'
     Customer:
       type: object
       properties:

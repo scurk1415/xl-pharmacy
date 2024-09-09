@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { TableModule } from '@xl/shared/components/table/table.module';
-import { FilterPageDirective } from '@xl/shared/components/filterPage/filter-page.directive';
 import { ApiUserResponse } from '@xl/api';
 import { UsersService } from '../../services/users.service';
+import { TableModule } from '@xl/shared/features/table/table.module';
+import { TableBase } from '@xl/shared/components/filter-page/table-base.directive';
 
 @Component({
   selector: 'xl-user-management',
@@ -12,13 +12,13 @@ import { UsersService } from '../../services/users.service';
   styleUrl: './user-management.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export default class UserManagementComponent extends FilterPageDirective<ApiUserResponse> {
+export default class UserManagementComponent extends TableBase<ApiUserResponse> {
 
   private usersService = inject(UsersService);
 
-  data = this.usersService.getUsers();
+  override data = this.usersService.getUsers();
 
-  getColumns() {
+  override getColumns() {
     return [
       { label: 'Id' },
       { label: 'Name' },

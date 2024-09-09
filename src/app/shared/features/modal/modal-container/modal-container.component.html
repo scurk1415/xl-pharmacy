@@ -1,0 +1,13 @@
+<header>
+  @if (title()) {
+    <h1 class="modal-title">{{ title() }}</h1>
+  }
+
+  <i class="close-modal-icon" (click)="closeModal()">X</i>
+
+</header>
+
+
+<main>
+  <ng-content></ng-content>
+</main>
