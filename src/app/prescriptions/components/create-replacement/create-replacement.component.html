@@ -1,6 +1,6 @@
 <xl-modal-container [title]="'Zamenjava Izdelka'">
 
-    <div class="wrapper">
+    <form [formGroup]="form" class="wrapper" (ngSubmit)="createReplacement()">
       <!-- Left Column (Form for selecting product and instructions) -->
       <div class="info-wrapper">
 
@@ -21,12 +21,12 @@
         </xl-label-field>
 
         <xl-label-field [label]="'Izracunano st. enot'" [horizontal]="true">
-          <input type="text">
+          <input type="text" [formControl]="form.controls.quantity">
         </xl-label-field>
 
         <xl-label-field [label]="'Navodilo pacientu'" [horizontal]="true">
           1x3 pred jedjo
-          <textarea [placeholder]="'1x3 pred jedjo'"></textarea>
+          <textarea [placeholder]="'1x3 pred jedjo'" [formControl]="form.controls.instructions"></textarea>
         </xl-label-field>
 
         <xl-label-field [label]="'Navodilo farmacevtu'" [horizontal]="true">
@@ -49,33 +49,27 @@
           <input type="checkbox" id="inStockCheck">
           <label for="inStockCheck">In Stock Only</label>
         </div>
-        <xl-suggested-replacements></xl-suggested-replacements>
-
+        <xl-suggested-replacements (addReplacement)="addReplacement($event)"></xl-suggested-replacements>
       </div>
 
       <!-- Right Column (Selected Products) -->
       <div class="info-wrapper">
-        <h5>Selected Products</h5>
-        <ul class="selected-products">
-          <li>
-            Atoris 10 mg film.obl.tbl. 30x
-            <input type="number" value="3" style="width: 50px;">
-            <button class="btn btn-danger btn-sm">x</button>
-          </li>
-          <li>
-            Sortis 10 mg film.obl.tbl. 30x
-            <input type="number" value="2" style="width: 50px;">
-            <button class="btn btn-danger btn-sm">x</button>
-          </li>
-        </ul>
-        <div class="total-cost">
-          <h6>Total Cost: <strong>4.26</strong></h6>
+        <h5>Izbrani izdelki</h5>
+
+        <div class="">
           <div>
-            <button class="btn btn-outline-secondary">Cancel</button>
-            <button class="btn btn-primary">To Checkout</button>
+            <xl-selected-replacements formArrayName="alternatives"></xl-selected-replacements>
+          </div>
+          <div>Total</div>
+          <div>Buttons
+
+            <button type="button" (click)="closeModal()">Preklici</button>
+            <button type="submit">Na Kosovnico</button>
           </div>
         </div>
       </div>
-    </div>
+
+      {{form.value | json }}
+    </form>
 
 </xl-modal-container>

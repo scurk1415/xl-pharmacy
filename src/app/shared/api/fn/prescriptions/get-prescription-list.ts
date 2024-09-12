@@ -10,17 +10,17 @@ import { ApiPrescriptionRequest } from '../../models/api-prescription-request';
 import { ApiPrescriptionResponse } from '../../models/api-prescription-response';
 
 export interface GetPrescriptionList$Params {
-  
-    /**
-     * Filter Prescriptions
-     */
-    body?: ApiPrescriptionRequest
+
+/**
+ * Filter Prescriptions
+ */
+  filter: ApiPrescriptionRequest;
 }
 
-export function getPrescriptionList(http: HttpClient, rootUrl: string, params?: GetPrescriptionList$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ApiPrescriptionResponse>>> {
+export function getPrescriptionList(http: HttpClient, rootUrl: string, params: GetPrescriptionList$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ApiPrescriptionResponse>>> {
   const rb = new RequestBuilder(rootUrl, getPrescriptionList.PATH, 'get');
   if (params) {
-    rb.body(params.body, 'application/json');
+    rb.query('filter', params.filter, {});
   }
 
   return http.request(

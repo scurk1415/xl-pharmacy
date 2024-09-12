@@ -9,12 +9,13 @@ paths:
         - prescriptions
       summary: Get prescription list
       operationId: getPrescriptionList
-      requestBody:
-        description: Filter Prescriptions
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PrescriptionRequest'
+      parameters:
+        - name: filter
+          in: query
+          description: Filter Prescriptions
+          required: true
+          schema:
+            $ref: '#/components/schemas/PrescriptionRequest'
       responses:
         default:
           description: successful operation
@@ -24,6 +25,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PrescriptionResponse'
+    post:
+      tags:
+        - prescriptions
+      summary: Create prescription replacement
+      operationId: createReplacement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrescriptionUpdateRequest'
+      responses:
+        default:
+          description: successful operation
   /prescriptions/{prescriptionId}:
     get:
       tags:
@@ -47,27 +61,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PrescriptionReplacementResponse'
-  /products:
-    get:
-      tags:
-        - products
-      summary: Get product list
-      operationId: getProductList
-      requestBody:
-        description: Filter Products
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProductRequest'
-      responses:
-        default:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ProductResponse'
   /users:
     get:
       tags:
@@ -117,6 +110,27 @@ components:
         - customer
         - prescriptionDate
         - totalAmount
+    PrescriptionUpdateRequest:
+      type: object
+      properties:
+        quantity:
+          type: number
+        instructions:
+          type: string
+        alternatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrescriptionAlternative'
+      required:
+        - quantity
+        - alternatives
+    PrescriptionAlternative:
+      type: object
+      properties:
+        id:
+          type: number
+        quantity:
+          type: number
     PrescriptionReplacementResponse:
       type: object
       properties:
@@ -137,22 +151,6 @@ components:
           type: number
         name:
           type: string
-    ProductRequest:
-      type: object
-      properties:
-        name:
-          type: string
-        available:
-          type: boolean
-    ProductResponse:
-      type: object
-      properties:
-        productId:
-          type: number
-        productName:
-          type: string
-        available:
-          type: boolean
     UserRequest:
       type: object
       properties:

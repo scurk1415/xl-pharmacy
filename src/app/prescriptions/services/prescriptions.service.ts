@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { toListSignal } from '@xl/shared/helpers/signal-helper';
 import { catchError, of } from 'rxjs';
-import { ApiPrescriptionResponse, PrescriptionsApiService, ApiPrescriptionReplacementResponse } from '@xl/api';
+import { PrescriptionsApiService, ApiPrescriptionResponse, ApiPrescriptionReplacementResponse } from '@xl/api';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class PrescriptionsService {
   private prescriptionsApiService = inject(PrescriptionsApiService);
 
   getPrescriptions() {
-    return toListSignal(this.prescriptionsApiService.getPrescriptionList()
+    return toListSignal(this.prescriptionsApiService.getPrescriptionList({ filter: {} })
       .pipe(
         catchError(() => of(prescriptions))
       ));
@@ -23,10 +23,20 @@ export class PrescriptionsService {
         catchError(() => of(filters))
       );
   }
+
+  creteReplacement(replacement: any) {
+    this.prescriptionsApiService.createReplacement({ body: replacement });
+  }
 }
 
 const prescriptions: ApiPrescriptionResponse[] = [
-  { prescriptionId: 1, prescriptionName: 'First Order', prescriptionDate: new Date().valueOf(), totalAmount: 15, customer: { name: 'John Doe', customerId: 1 } }
+  {
+    prescriptionId: 1,
+    prescriptionName: 'First Order',
+    prescriptionDate: new Date().valueOf(),
+    totalAmount: 15,
+    customer: { name: 'John Doe', customerId: 1 }
+  }
 ];
 
 const filters: ApiPrescriptionReplacementResponse[] = [

@@ -18,7 +18,6 @@ export class MenuComponent {
 
   private prepareMenuItems() {
     return signal([
-      { label: 'Products', path: '/products' },
       { label: 'Prescriptions', path: '/prescriptions' },
       { label: 'Users', path: '/users' }
     ]);

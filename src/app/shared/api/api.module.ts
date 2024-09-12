@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { PrescriptionsApiService } from './services/prescriptions-api.service';
-import { ProductsApiService } from './services/products-api.service';
 import { UserApiService } from './services/user-api.service';
 
 /**
@@ -17,7 +16,6 @@ import { UserApiService } from './services/user-api.service';
   declarations: [],
   providers: [
     PrescriptionsApiService,
-    ProductsApiService,
     UserApiService,
     ApiConfiguration
   ],

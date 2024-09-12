@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Signal, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, signal, output } from '@angular/core';
 import { TableColumn } from '@xl/shared/features/table/table.component';
 import { TableBase } from '@xl/shared/components/filter-page/table-base.directive';
 import { DecimalPipe } from '@angular/common';
 import { TableModule } from '@xl/shared/features/table/table.module';
 import { StockBadgeComponent } from '../stock-badge/stock-badge.component';
+import { SuggestedReplacement } from '../../models/suggested-replacement';
 
 @Component({
   selector: 'xl-suggested-replacements',
@@ -19,6 +20,8 @@ import { StockBadgeComponent } from '../stock-badge/stock-badge.component';
 })
 export class SuggestedReplacementsComponent extends TableBase<SuggestedReplacement> {
 
+  addReplacement = output<SuggestedReplacement>()
+
   override data = this.prepareData();
 
   override getColumns(): TableColumn[] {
@@ -32,26 +35,31 @@ export class SuggestedReplacementsComponent extends TableBase<SuggestedReplaceme
   private prepareData(): Signal<SuggestedReplacement[]> {
     return signal([
       {
+        id: 1,
         label: 'Atoris 10 mg film.obl.tbl. 30x',
         price: 1.59,
         stockNumber: 8
       },
       {
+        id: 2,
         label: 'Sortis 10 mg film.obl.tbl. 30x',
         price: 2.67,
         stockNumber: 2
       },
       {
+        id: 3,
         label: 'Atoris 10 mg film.obl.tbl. 90x',
         price: 2.12,
         stockNumber: 15
       },
       {
+        id: 4,
         label: 'Stavra 10 mg film.obl.tbl. 30x',
         price: 1.59,
         stockNumber: 0
       },
       {
+        id: 5,
         label: 'Tulip 10 mg film.obl.tbl. 30x',
         price: 1.59,
         stockNumber: 7
@@ -59,13 +67,8 @@ export class SuggestedReplacementsComponent extends TableBase<SuggestedReplaceme
     ])
   }
 
-  addReplacement(item: SuggestedReplacement) {
-    console.log('Added replacement:', item);
+  onAddReplacement(item: SuggestedReplacement) {
+    this.addReplacement.emit(item);
   }
 }
 
-interface SuggestedReplacement {
-  label: string;
-  price: number;
-  stockNumber: number;
-}

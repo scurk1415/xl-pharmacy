@@ -6,19 +6,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { ApiPrescriptionUpdateRequest } from '../../models/api-prescription-update-request';
 
-export interface DeleteOrder$Params {
-
-/**
- * ID of the order that needs to be deleted
- */
-  orderId: number;
+export interface CreateReplacement$Params {
+      body?: ApiPrescriptionUpdateRequest
 }
 
-export function deleteOrder(http: HttpClient, rootUrl: string, params: DeleteOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, deleteOrder.PATH, 'delete');
+export function createReplacement(http: HttpClient, rootUrl: string, params?: CreateReplacement$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, createReplacement.PATH, 'post');
   if (params) {
-    rb.path('orderId', params.orderId, {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -31,4 +28,4 @@ export function deleteOrder(http: HttpClient, rootUrl: string, params: DeleteOrd
   );
 }
 
-deleteOrder.PATH = '/store/order/{orderId}';
+createReplacement.PATH = '/prescriptions';

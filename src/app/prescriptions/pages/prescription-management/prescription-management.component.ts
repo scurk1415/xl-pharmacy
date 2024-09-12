@@ -4,8 +4,8 @@ import { DecimalPipe } from '@angular/common';
 import { TableModule } from '@xl/shared/features/table/table.module';
 import { TableBase } from '@xl/shared/components/filter-page/table-base.directive';
 import { ModalService } from '@xl/shared/features/modal/modal.service';
-import { EditPrescriptionComponent } from '../../components/edit-prescription/edit-prescription.component';
 import { ApiPrescriptionResponse } from '@xl/api';
+import { CreateReplacementComponent } from '../../components/create-replacement/create-replacement.component';
 
 @Component({
   selector: 'xl-order-management',
@@ -37,7 +37,7 @@ export default class PrescriptionManagementComponent extends TableBase<ApiPrescr
   }
 
   openEditModal(item: ApiPrescriptionResponse) {
-    this.modalService.open(EditPrescriptionComponent, item, { width: '95%'}).subscribe(console.log)
+    this.modalService.open(CreateReplacementComponent, item, { width: '95%'}).subscribe(console.log)
   }
 
 }
