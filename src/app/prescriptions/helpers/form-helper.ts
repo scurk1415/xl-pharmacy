@@ -52,7 +52,6 @@ export function checkAlternativeQuantities(): ValidatorFn {
       .map(altCtrl => altCtrl.controls.quantity.value || 0)
       .reduce((acc, value) => acc + value, 0);
 
-    console.log('totalSelectedQuantity', totalSelectedQuantity);
     return totalSelectedQuantity > quantity ? { sumExceeded: true } : null;
   };
 }
