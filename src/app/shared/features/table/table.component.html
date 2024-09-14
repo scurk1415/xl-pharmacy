@@ -7,9 +7,9 @@
     </tr>
   </thead>
   <tbody>
-    @for (row of data(); track $index) {
+    @for (row of data(); let index = $index; track index) {
       <ng-container [ngTemplateOutlet]="rowTemplate().template"
-                    [ngTemplateOutletContext]="{$implicit: row}">
+                    [ngTemplateOutletContext]="{$implicit: row, index: index}">
       </ng-container>
     }
   </tbody>

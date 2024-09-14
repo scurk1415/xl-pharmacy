@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, Signal, signal, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Signal, signal, output, input, computed } from '@angular/core';
 import { TableColumn } from '@xl/shared/features/table/table.component';
 import { TableBase } from '@xl/shared/components/filter-page/table-base.directive';
 import { DecimalPipe } from '@angular/common';
 import { TableModule } from '@xl/shared/features/table/table.module';
 import { StockBadgeComponent } from '../stock-badge/stock-badge.component';
 import { SuggestedReplacement } from '../../models/suggested-replacement';
+
 
 @Component({
   selector: 'xl-suggested-replacements',
@@ -19,6 +20,10 @@ import { SuggestedReplacement } from '../../models/suggested-replacement';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SuggestedReplacementsComponent extends TableBase<SuggestedReplacement> {
+
+  alternatives = input.required<any[]>();
+
+  selectedItems = computed(() => this.alternatives().map((item: any) => item.id));
 
   addReplacement = output<SuggestedReplacement>()
 
@@ -71,4 +76,3 @@ export class SuggestedReplacementsComponent extends TableBase<SuggestedReplaceme
     this.addReplacement.emit(item);
   }
 }
-

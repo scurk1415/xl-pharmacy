@@ -13,3 +13,25 @@
     background-color: #fafafa;
   }
 }
+
+.selected-replacement-tab {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .replacements-table {
+    flex: 1;
+  }
+
+  .total-value {
+    margin: 10px 0;
+    text-align: right;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: end;
+    gap: 5px;
+  }
+
+}

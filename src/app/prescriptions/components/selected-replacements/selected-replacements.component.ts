@@ -1,37 +1,34 @@
-import { ChangeDetectionStrategy, Component, forwardRef, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, computed, output } from '@angular/core';
 import { StockBadgeComponent } from '../stock-badge/stock-badge.component';
 import { TableColumn } from '@xl/shared/features/table/table.component';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TableBase } from '@xl/shared/components/filter-page/table-base.directive';
 import { SuggestedReplacement } from '../../models/suggested-replacement';
 import { TableModule } from '@xl/shared/features/table/table.module';
+import { JsonPipe } from '@angular/common';
+import { FormGroup, FormArray, ReactiveFormsModule } from '@angular/forms';
+import { AlternativeGroup } from '../../helpers/form-helper';
 
 @Component({
   selector: 'xl-selected-replacements',
   standalone: true,
   imports: [
     StockBadgeComponent,
-    TableModule
+    TableModule,
+    JsonPipe,
+    ReactiveFormsModule
   ],
   templateUrl: './selected-replacements.component.html',
   styleUrl: './selected-replacements.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SelectedReplacementsComponent),
-      multi: true
-    }
-  ]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SelectedReplacementsComponent extends TableBase<SuggestedReplacement> implements ControlValueAccessor {
+export class SelectedReplacementsComponent extends TableBase<SuggestedReplacement>  {
 
-  private onChange: (value: any[]) => void = (value) => {};
-  private onTouched: () => void = () => {};
+  formArray = input.required<FormArray<FormGroup<AlternativeGroup>>>()
 
-  value = signal<any>([]);
+  alternatives = input.required<any[]>();
+  removeReplacement = output<SuggestedReplacement>()
 
-  override data = this.value();
+  override data = computed(() => this.alternatives());
 
   override getColumns(): TableColumn[] {
     return [
@@ -41,16 +38,12 @@ export class SelectedReplacementsComponent extends TableBase<SuggestedReplacemen
     ];
   }
 
-  writeValue(value: any): void {
-    console.log(value);
-    this.value.set(value);
+  onRemoveReplacement(index: number) {
+    this.formArray().removeAt(index);
   }
 
-  registerOnChange(fn: (value: any[]) => void): void {
-    this.onChange = fn;
+  get alternativesFormControls() {
+    return this.formArray().controls;
   }
 
-  registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
-  }
 }

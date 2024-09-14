@@ -1,0 +1,19 @@
+button {
+  background: #f8f8f8;
+  color: #3c3c3c;
+  border: none;
+  box-shadow: 1px 1px 3px #3c3c3c;
+  cursor: pointer;
+  border-radius: 2px;
+
+  &:disabled {
+    cursor: default;
+    color: #c2c2c2;
+    box-shadow: none;
+  }
+
+  &.simple {
+    background: none;
+    box-shadow: none;
+  }
+}

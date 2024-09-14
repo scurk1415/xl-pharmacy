@@ -9,7 +9,8 @@
       </td>
       <td style="text-align: right;">{{ item.price }}</td>
       <td style="text-align: center;">
-        <button (click)="onAddReplacement(item)">+</button>
+        @let isDisabled = selectedItems().includes(item.id);
+        <button [disabled]="isDisabled" (click)="onAddReplacement(item)">+</button>
       </td>
     </tr>
   </ng-template>

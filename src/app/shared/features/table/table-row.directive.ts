@@ -18,4 +18,5 @@ export class TableRowDirective<Item> {
 
 interface TableRowContext<T> {
   $implicit: T;
+  index: number;
 }

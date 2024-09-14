@@ -4,13 +4,15 @@ import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { LabelFieldComponent } from '@xl/shared/components/label-field/label-field.component';
 import { ReplacementFilterComponent } from '../replacement-filter/replacement-filter.component';
 import { PrescriptionsService } from '../../services/prescriptions.service';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe, DecimalPipe } from '@angular/common';
 import { SuggestedReplacementsComponent } from '../suggested-replacements/suggested-replacements.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormHelper } from '../../helpers/form-helper';
 import { ApiPrescriptionResponse } from '@xl/api';
 import { SuggestedReplacement } from '../../models/suggested-replacement';
 import { SelectedReplacementsComponent } from '../selected-replacements/selected-replacements.component';
+import { Observable, startWith } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'xl-create-replacement',
@@ -23,7 +25,8 @@ import { SelectedReplacementsComponent } from '../selected-replacements/selected
     SuggestedReplacementsComponent,
     ReactiveFormsModule,
     JsonPipe,
-    SelectedReplacementsComponent
+    SelectedReplacementsComponent,
+    DecimalPipe
   ],
   templateUrl: './create-replacement.component.html',
   styleUrl: './create-replacement.component.scss',
@@ -38,6 +41,7 @@ export class CreateReplacementComponent {
   protected form = FormHelper.createForm()
 
   itemOptions = this.prescriptionsService.getItemOptions(this.data.prescriptionId);
+  currentTotalValue$: Observable<number> = this.calculateTotalValue();
 
   createReplacement() {
 
@@ -56,5 +60,13 @@ export class CreateReplacementComponent {
     this.form.controls.alternatives.push(
       FormHelper.createAlternativeGroup(item)
     );
+  }
+
+  private calculateTotalValue() {
+    return this.form.controls.alternatives.valueChanges
+      .pipe(
+        map((alternatives) => alternatives.reduce((acc, curr) => acc + (curr.price! * curr.quantity!), 0)),
+        startWith(0)
+      );
   }
 }
