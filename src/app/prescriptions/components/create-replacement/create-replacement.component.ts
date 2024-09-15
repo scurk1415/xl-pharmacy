@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ModalContainerComponent } from '@xl/shared/features/modal/modal-container/modal-container.component';
-import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { LabelFieldComponent } from '@xl/shared/components/label-field/label-field.component';
 import { ReplacementFilterComponent } from '../replacement-filter/replacement-filter.component';
 import { PrescriptionsService } from '../../services/prescriptions.service';
@@ -11,8 +11,10 @@ import { FormHelper } from '../../helpers/form-helper';
 import { ApiPrescriptionResponse } from '@xl/api';
 import { SuggestedReplacement } from '../../models/suggested-replacement';
 import { SelectedReplacementsComponent } from '../selected-replacements/selected-replacements.component';
-import { Observable, startWith } from 'rxjs';
+import { Observable, startWith, switchMap, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { SuggestionFilter } from '../../models/suggestion-filter';
 
 @Component({
   selector: 'xl-create-replacement',
@@ -35,16 +37,15 @@ import { map } from 'rxjs/operators';
 export class CreateReplacementComponent {
 
   private prescriptionsService = inject(PrescriptionsService);
-  private dialogRef = inject(DialogRef<ApiPrescriptionResponse>);
   protected data = inject<ApiPrescriptionResponse>(DIALOG_DATA);
 
-  protected form = FormHelper.createForm()
+  protected form = FormHelper.createForm();
 
-  itemOptions = this.prescriptionsService.getItemOptions(this.data.prescriptionId);
-  currentTotalValue$: Observable<number> = this.calculateTotalValue();
+  protected itemOptions = this.prescriptionsService.getItemOptions(this.data.prescriptionId);
+  protected currentTotalValue$: Observable<number> = this.calculateTotalValue();
+  protected filteredData = toSignal(this.listenToFilterChanges(), { initialValue: [] });
 
   createReplacement() {
-
     if (this.form.invalid) {
       return;
     }
@@ -52,8 +53,8 @@ export class CreateReplacementComponent {
     this.prescriptionsService.creteReplacement(this.form.getRawValue());
   }
 
-  closeModal() {
-    this.dialogRef.close();
+  resetReplacements() {
+    this.form.controls.alternatives.clear();
   }
 
   addReplacement(item: SuggestedReplacement) {
@@ -69,4 +70,17 @@ export class CreateReplacementComponent {
         startWith(0)
       );
   }
+
+  private listenToFilterChanges() {
+    return combineLatest([
+        this.form.controls.codes.valueChanges.pipe(startWith(this.form.controls.codes.value)),
+        this.form.controls.search.valueChanges.pipe(startWith(this.form.controls.search.value)),
+        this.form.controls.onlyAvailable.valueChanges.pipe(startWith(this.form.controls.onlyAvailable.value))
+      ])
+        .pipe(
+          map(([codes, search, onlyAvailable]) => ({ codes: codes!, search: search!, onlyAvailable: onlyAvailable! })),
+          switchMap((filtered: SuggestionFilter) => this.prescriptionsService.getSuggestions(filtered))
+        );
+  }
+
 }

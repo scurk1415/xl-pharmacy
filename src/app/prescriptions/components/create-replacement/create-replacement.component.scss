@@ -14,6 +14,15 @@
   }
 }
 
+.search-form-group {
+  display: flex;
+  gap: 10px;
+
+  .form-group:first-child {
+    flex: 1;
+  }
+}
+
 .selected-replacement-tab {
   display: flex;
   flex-direction: column;

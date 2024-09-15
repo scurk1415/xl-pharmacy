@@ -9,7 +9,7 @@
       </td>
       <td style="text-align: right;">{{ item.price }}</td>
       <td style="text-align: center;">
-        @let isDisabled = selectedItems().includes(item.id);
+        @let isDisabled = selectedItems().includes(item.id) || item.stockNumber === 0;
         <button [disabled]="isDisabled" (click)="onAddReplacement(item)">+</button>
       </td>
     </tr>

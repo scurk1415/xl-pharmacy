@@ -3,4 +3,5 @@ export interface SuggestedReplacement {
   label: string;
   price: number;
   stockNumber: number;
+  code: string;
 }

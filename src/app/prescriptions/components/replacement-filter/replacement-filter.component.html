@@ -1,7 +1,10 @@
-@for (option of options(); track option.value) {
+@for (option of innedOptions(); let index = $index; track option.value) {
   <div class="filter-option">
     <div class="option-group">
-      <input type="checkbox" [id]="option.value">
+      <input type="checkbox"
+             [id]="option.value"
+             [checked]="option.selected"
+             (click)="toggle(option, index)">
       <label [for]="option.value">{{ option.name }}</label>
     </div>
 
@@ -10,7 +13,19 @@
 
   @if (option.children) {
     <div class="option-children">
-      <xl-replacement-filter [options]="option.children"></xl-replacement-filter>
+      @for (child of option.children; let childIndex = $index; track child.value) {
+        <div class="filter-option">
+          <div class="option-group">
+            <input type="checkbox"
+                   [id]="child.value"
+                   [checked]="child.selected"
+                   (click)="toggleChild(child, childIndex, option, index)">
+            <label [for]="child.value">{{ child.name }}</label>
+          </div>
+
+          <div class="option-description">{{ child.description }}</div>
+        </div>
+      }
     </div>
   }
 

@@ -1,7 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { toListSignal } from '@xl/shared/helpers/signal-helper';
-import { catchError, of } from 'rxjs';
-import { PrescriptionsApiService, ApiPrescriptionResponse, ApiPrescriptionReplacementResponse } from '@xl/api';
+import { catchError, of, Observable } from 'rxjs';
+import { PrescriptionsApiService, ApiPrescriptionResponse } from '@xl/api';
+import { SuggestedReplacement } from '../models/suggested-replacement';
+import { SuggestionFilter } from '../models/suggestion-filter';
+import { map } from 'rxjs/operators';
+import { PrescriptionReplacementOption } from '../models/prescription-replacement-option';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +21,7 @@ export class PrescriptionsService {
       ));
   }
 
-  getItemOptions(prescriptionId: number) {
+  getItemOptions(prescriptionId: number): Observable<any[]> {
     return this.prescriptionsApiService.getFilters({ prescriptionId: prescriptionId })
       .pipe(
         catchError(() => of(filters))
@@ -26,6 +30,65 @@ export class PrescriptionsService {
 
   creteReplacement(replacement: any) {
     this.prescriptionsApiService.createReplacement({ body: replacement });
+  }
+
+  getSuggestions(filter: SuggestionFilter) {
+    if (filter.codes.length === 0) {
+      return of([]);
+    }
+
+    return of<SuggestedReplacement[]>([
+      {
+        id: 1,
+        label: 'Atoris 10 mg film.obl.tbl. 30x',
+        price: 1.59,
+        stockNumber: 8,
+        code: 'MZZ'
+      },
+      {
+        id: 2,
+        label: 'Sortis 10 mg film.obl.tbl. 30x',
+        price: 2.67,
+        stockNumber: 2,
+        code: 'TSZ'
+      },
+      {
+        id: 3,
+        label: 'Atoris 10 mg film.obl.tbl. 90x',
+        price: 2.12,
+        stockNumber: 15,
+        code: 'ATC'
+      },
+      {
+        id: 4,
+        label: 'Stavra 10 mg film.obl.tbl. 30x',
+        price: 1.59,
+        stockNumber: 0,
+        code: 'C10AA05'
+      },
+      {
+        id: 5,
+        label: 'Tulip 10 mg film.obl.tbl. 30x',
+        price: 1.59,
+        stockNumber: 7,
+        code: 'C10AA'
+      }
+    ])
+      .pipe(
+        map((items) => {
+          return items.filter(it => {
+            if (filter.onlyAvailable && it.stockNumber <= 0) {
+              return false;
+            }
+
+            if (filter.search && !it.label.includes(filter.search)) {
+              return false;
+            }
+
+            return !(filter.codes?.length > 0 && !filter.codes.includes(it.code));
+          });
+        })
+      );
   }
 }
 
@@ -39,45 +102,53 @@ const prescriptions: ApiPrescriptionResponse[] = [
   }
 ];
 
-const filters: ApiPrescriptionReplacementResponse[] = [
+const filters: PrescriptionReplacementOption[] = [
   {
     name: 'MZZ',
     description: 'atorvastatin 10mg, filmsko ovlozena tableta',
-    value: 'MZZ'
+    value: 'MZZ',
+    selected: false
   },
   {
     name: 'TSZ',
     description: 'Zdravila za znizevanje holesterola',
-    value: 'TSZ'
+    value: 'TSZ',
+    selected: false
   },
   {
     name: 'ATC',
     value: 'ATC',
+    selected: false,
     children: [
       {
         name: 'C10AA05',
         description: 'Atorvastatin',
-        value: 'C10AA05'
+        value: 'C10AA05',
+        selected: false
       },
       {
         name: 'C10AA',
         description: 'Zaviralci reduktaze HMG CoA',
-        value: 'C10AA'
+        value: 'C10AA',
+        selected: false
       },
       {
         name: 'C10A',
         description: 'Zdravila za spreminjanje ravni serumkius lipidov, enokomponentna zdravila',
-        value: 'C10A'
+        value: 'C10A',
+        selected: false
       },
       {
         name: 'C10',
         description: 'Zdravila za spreminjanje ravni serumkius lipidov',
-        value: 'C10'
+        value: 'C10',
+        selected: false
       },
       {
         name: 'C',
         description: 'Zdravila za bolezni srca in ožilja',
-        value: 'C'
+        value: 'C',
+        selected: false
       }
     ]
   }

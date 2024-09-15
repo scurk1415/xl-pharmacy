@@ -38,7 +38,9 @@
         </xl-label-field>
 
         <xl-label-field [label]="'Skupine in oznake'">
-          <xl-replacement-filter [options]="(itemOptions | async)!"></xl-replacement-filter>
+          <xl-replacement-filter [formControl]="form.controls.codes"
+                                 [options]="(itemOptions | async)!">
+          </xl-replacement-filter>
         </xl-label-field>
 
       </div>
@@ -46,14 +48,19 @@
       <!-- Middle Column (Product Suggestions) -->
       <div class="info-wrapper">
         <h5>Predlagani izdelki</h5>
-        <div class="form-group">
-          <input type="text" placeholder="Search for a product">
-        </div>
-        <div class="form-group">
-          <input type="checkbox" id="inStockCheck">
-          <label for="inStockCheck">In Stock Only</label>
+        <div class="search-form-group">
+          <div class="form-group">
+            <input type="text"
+                   placeholder="Search for a product"
+                   [formControl]="form.controls.search">
+          </div>
+          <div class="form-group">
+            <input type="checkbox" id="inStockCheck" [formControl]="form.controls.onlyAvailable">
+            <label for="inStockCheck">In Stock Only</label>
+          </div>
         </div>
         <xl-suggested-replacements [alternatives]="form.controls.alternatives.value"
+                                   [data]="filteredData()"
                                    (addReplacement)="addReplacement($event)">
         </xl-suggested-replacements>
       </div>
@@ -76,7 +83,7 @@
           </div>
           <div class="total-value">Skupno doplacilo {{currentTotalValue$ | async | number:'1.2-2' }}</div>
           <div class="buttons">
-            <button type="button" class="simple" (click)="closeModal()">Preklici</button>
+            <button type="button" class="simple" (click)="resetReplacements()">Preklici</button>
             <button type="submit">Na Kosovnico</button>
           </div>
         </div>

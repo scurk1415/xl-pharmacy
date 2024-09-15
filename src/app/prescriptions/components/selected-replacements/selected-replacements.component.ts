@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, computed, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, computed } from '@angular/core';
 import { StockBadgeComponent } from '../stock-badge/stock-badge.component';
 import { TableColumn } from '@xl/shared/features/table/table.component';
 import { TableBase } from '@xl/shared/components/filter-page/table-base.directive';
@@ -26,7 +26,6 @@ export class SelectedReplacementsComponent extends TableBase<SuggestedReplacemen
   formArray = input.required<FormArray<FormGroup<AlternativeGroup>>>()
 
   alternatives = input.required<any[]>();
-  removeReplacement = output<SuggestedReplacement>()
 
   override data = computed(() => this.alternatives());
 

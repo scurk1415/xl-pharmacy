@@ -7,7 +7,10 @@ export class FormHelper {
     return new FormGroup<MainFormGroup>({
       quantity: new FormControl(1, { validators: [Validators.required], nonNullable: true }),
       instructions: new FormControl(''),
-      alternatives: new FormArray<FormGroup<AlternativeGroup>>([], { validators: [Validators.required] })
+      alternatives: new FormArray<FormGroup<AlternativeGroup>>([], { validators: [Validators.required] }),
+      search: new FormControl(''),
+      onlyAvailable: new FormControl(false),
+      codes: new FormControl([])
     }, { updateOn: 'change', validators: [checkAlternativeQuantities()] });
   }
 
@@ -27,6 +30,9 @@ export interface MainFormGroup {
   quantity: FormControl<number>;
   instructions: FormControl<string | null>;
   alternatives: FormArray<FormGroup<AlternativeGroup>>;
+  search: FormControl<string | null>,
+  onlyAvailable: FormControl<boolean | null>,
+  codes: FormControl<string[] | null>
 }
 
 export interface AlternativeGroup {
